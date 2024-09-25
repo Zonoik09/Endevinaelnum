@@ -1,19 +1,28 @@
 package com.jonathan.endevinaelnum;
 
+import static java.lang.Character.*;
+
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
-
+    CharSequence text;
+    int duration;
+    int count;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,23 +35,45 @@ public class MainActivity extends AppCompatActivity {
         });
 
         int numadivinar = (int) (Math.random()*(100-1)+1);
+
+
+
         final Button button = findViewById(R.id.buttonconfirm);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Code here executes on main thread after user presses button
-                @SuppressLint("ResourceType") int num = getText(R.id.textNum).length();
+                // Esto coge el numero y lo transforma de un String a un int
+                EditText editText = findViewById(R.id.textNum);
+                String numText = String.valueOf(editText.getText());
+                int num = Integer.parseInt(numText);
 
-                CharSequence text;
-                int duration;
                 if (numadivinar == num) {
-                    text = "Vamoooos";
-                    duration = Toast.LENGTH_SHORT;
+                    count ++;
+                    text = "Efectivamente, el numero es: "+numadivinar+" "+count;
+
+                    // Crear un Dialog
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                    builder.setTitle("¡Felicidades!");
+                    builder.setMessage("Has adivinado el número " + numadivinar);
+
+                    // Añadir botones de acción al diálogo
+                    builder.setPositiveButton("OK", (dialog, which) -> {
+                        int numadivinar = (int) (Math.random()*(100-1)+1);
+                        dialog.dismiss();
+                    });
+                    // Ejecuta el dialog
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+
                 } else {
-                    text = ""+numadivinar;
-                    duration = Toast.LENGTH_SHORT;
+                    count ++;
+                    if (num > numadivinar) {
+                        text = "El numero es mes petit que "+num+" "+count;
+                    } else {
+                        text = "El numero es mes gran que "+num+" "+count;
+                    }
 
                 }
-                Toast toast = Toast.makeText(MainActivity.this, text,duration);
+                Toast toast = Toast.makeText(MainActivity.this, text,Toast.LENGTH_SHORT);
                 toast.show();
 
 
