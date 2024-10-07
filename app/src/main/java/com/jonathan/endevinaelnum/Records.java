@@ -16,7 +16,7 @@ import java.util.Comparator;
 
 public class Records extends AppCompatActivity {
 
-    ArrayList<Record> recordsList; // Lista para recibir los records
+    ArrayList<Record> recordsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
